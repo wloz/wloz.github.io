@@ -322,7 +322,8 @@
       
         
           
-            <p>Wordpress安装之后邮件发送没有反应或者不成功，安装Postfix组建，比起sendmail效率更高些，下面介绍Postfix的安装过程，环境为centos 6 32位系统。</p>
+            <p>#postfix组建安装解决mail问题</p>
+<p>Wordpress安装之后邮件发送没有反应或者不成功，安装Postfix组建，比起sendmail效率更高些，下面介绍Postfix的安装过程，环境为centos 6 32位系统。</p>
 <p>1、如果装了sendmail的话，需要先卸载。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum remove sendmail</div></pre></td></tr></table></figure>
 <p>2、安装Postfix</p>
@@ -337,7 +338,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">myhostname = mail.toppai.com</div><div class="line">mydomain = toppai.com</div><div class="line">myorigin = $mydomain</div><div class="line">inet_interfaces = all</div><div class="line">mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain</div><div class="line">mynetworks = 192.168.100.10/28, 127.0.0.0/8</div><div class="line">relay_domains =</div><div class="line">home_mailbox = Maildir/</div></pre></td></tr></table></figure>
 <p>以上几个设置项不在同一个位置，需要分别寻找，并进行更改，其中相应的域名请改为自己的地址，以上几项的解释如下。</p>
 <blockquote>
-<p><a href="mydomain //指email服务器的域名，请确保为正式域名（如toppai.com）">mydomain //指email服务器的域名，请确保为正式域名（如toppai.com）</a><br>myhostname //指系统的主机名称（如我的服务器主机名称是mail.toppai.com）<u>注：如果主机有反向解析，请把主机IP地址解析到mail.toppai.com，而不是toppai.com，否则会被是为垃圾邮件。</u><br>myorigin //指定本地发送邮件中来源和传递显示的域名。（上面例子中，mydomain是toppai.com）<br>对于下面的一行，我们的邮件地址是user@centos.bz而不是user@mail.centos.bz。<br>myorigin = $mydomain //邮件地址格式以toppai.com结尾<br>mynetworks //指定受信任SMTP的列表，具体的说，受信任的SMTP客户端允许通过Postfix传递邮件。<br>mydestination //指定哪些邮件地址允许在本地发送邮件。这是一组被信任的允许通过服务器发送或传递邮件的IP地址。用户试图通过发送从此处未列出的IP地址的原始服务器的邮件将被拒绝。<br>inet_interfaces //设置网络接口以便Postfix能接收到邮件。<br>relay_domains //是系统传递邮件的目的域名列表。如果留空，我们保证了我们的邮件服务器不对不信任的网络开放。<br>home_mailbox //该参数设置邮箱路径与用户目录有关，也可以指定要使用的邮箱风格。</p>
+<p>mydomain //指email服务器的域名，请确保为正式域名（如toppai.com）<br>myhostname //指系统的主机名称（如我的服务器主机名称是mail.toppai.com）<u>注：如果主机有反向解析，请把主机IP地址解析到mail.toppai.com，而不是toppai.com，否则会被是为垃圾邮件。</u><br>myorigin //指定本地发送邮件中来源和传递显示的域名。（上面例子中，mydomain是toppai.com）<br>对于下面的一行，我们的邮件地址是user@centos.bz而不是user@mail.centos.bz。<br>myorigin = $mydomain //邮件地址格式以toppai.com结尾<br>mynetworks //指定受信任SMTP的列表，具体的说，受信任的SMTP客户端允许通过Postfix传递邮件。<br>mydestination //指定哪些邮件地址允许在本地发送邮件。这是一组被信任的允许通过服务器发送或传递邮件的IP地址。用户试图通过发送从此处未列出的IP地址的原始服务器的邮件将被拒绝。<br>inet_interfaces //设置网络接口以便Postfix能接收到邮件。<br>relay_domains //是系统传递邮件的目的域名列表。如果留空，我们保证了我们的邮件服务器不对不信任的网络开放。<br>home_mailbox //该参数设置邮箱路径与用户目录有关，也可以指定要使用的邮箱风格。</p>
 </blockquote>
 <p>6、检测并启动Postfix</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">service postfix status </div><div class="line">//若已启动会列出其PID，如下：</div><div class="line">master (pid 25579) is running...</div><div class="line">//若未启动，执行以下命令：</div><div class="line">service postfix start</div></pre></td></tr></table></figure>
